@@ -15,7 +15,7 @@ defmodule Day02 do
     |> Enum.reduce({0, 0, 0}, fn command, {position, depth, aim} ->
       execute2(command, position, depth, aim)
     end)
-    |> then(fn {x, y, z} -> x*y end)
+    |> then(fn {x, y, _} -> x*y end)
   end
 
   def execute("forward " <> val, position, depth) do
