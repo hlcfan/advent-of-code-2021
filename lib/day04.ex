@@ -2,22 +2,7 @@ require IEx
 
 defmodule Day04 do
   def part1 do
-    [numbers | raw_boards] =
-      File.read!("inputs/day04.txt")
-      |> String.split("\n", trim: true)
-
-    boards_mapping =
-      raw_boards
-      |> Enum.chunk_every(5)
-      |> Enum.map(&split_board/1)
-      |> Enum.map(&prepare_board_mapping/1)
-
-    boards =
-      raw_boards
-      |> Enum.chunk_every(5)
-      |> Enum.map(&split_board/1)
-
-    numbers = numbers |> String.split(",")
+    {numbers, boards, boards_mapping} = parse()
 
     Enum.reduce_while(numbers, boards, fn number, acc ->
       acc =
@@ -38,23 +23,7 @@ defmodule Day04 do
   end
 
   def part2 do
-    [numbers | raw_boards] =
-      File.read!("inputs/day04.txt")
-      |> String.split("\n", trim: true)
-
-    boards_mapping =
-      raw_boards
-      |> Enum.chunk_every(5)
-      |> Enum.map(&split_board/1)
-      |> Enum.map(&prepare_board_mapping/1)
-
-    boards =
-      raw_boards
-      |> Enum.chunk_every(5)
-      |> Enum.map(&split_board/1)
-
-    numbers = numbers |> String.split(",")
-
+    {numbers, boards, boards_mapping} = parse()
     Enum.reduce(numbers, {boards, boards_mapping, []}, fn number, {acc, mapping, res} ->
 
       acc =
@@ -149,6 +118,25 @@ defmodule Day04 do
     end)
     |> List.flatten()
     |> Enum.sum()
+  end
+
+  def parse() do
+    [numbers | raw_boards] =
+      File.read!("inputs/day04.txt")
+      |> String.split("\n", trim: true)
+
+    boards =
+      raw_boards
+      |> Enum.chunk_every(5)
+      |> Enum.map(&split_board/1)
+
+    boards_mapping =
+      boards
+      |> Enum.map(&prepare_board_mapping/1)
+
+    numbers = numbers |> String.split(",")
+
+    {numbers, boards, boards_mapping}
   end
 
   def prepare_board_mapping(board) do
